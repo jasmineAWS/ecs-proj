@@ -4,7 +4,7 @@ pipeline {
         stage ('SCM checkout') {
             steps {
                 script{
-                     git credentialsId: 'git-cred', url: 'https://github.com/naresh26git/helm-node.git'
+                     git credentialsId: 'git-cred', url: 'https://github.com/jasmineAWS/helm-node.git'
                 }
             }
         }
@@ -28,7 +28,7 @@ pipeline {
         stage('Docker Build Images') {
             steps {
                 script {
-                    sh 'docker build -t naresh2603/helm-rockets:v1 .'
+                    sh 'docker build -t jasmineaws/helm-rocket:v1 .'
                     sh 'docker images'
                 }
             }
@@ -37,8 +37,8 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'dockerPass', variable: 'dockerPassword')]) {
-                        sh "docker login -u naresh2603 -p ${dockerPassword}"
-                        sh 'docker push naresh2603/helm-rockets:v1'
+                        sh "docker login -u jasmineaws -p ${dockerPassword}"
+                        sh 'docker push naresh2603/helm-rocket:v1'
                     }
                 }
             }
@@ -46,7 +46,7 @@ pipeline {
         stage('Trivy Docker-scan') {
             steps {
                 script {
-                    sh 'trivy image naresh2603/helm-rockets:v1 > scan.txt' 
+                    sh 'trivy image naresh2603/helm-rocket:v1 > scan.txt' 
                 }
             }
         }
